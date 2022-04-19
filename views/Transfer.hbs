@@ -1,0 +1,79 @@
+{{> Aside}}
+<div class="col-12 col-sm-9 text-center px-3 p-sm-5">
+    <small class="mb-2">Banco Digital de Chile</small>
+    <h4 class=>Nueva Transferencia</h4>
+    <hr class="w-75 m-auto">
+    <div class="m-auto w-75 pt-3">
+        <div class="input-group mb-3">
+            <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
+                    class="fas fa-user-circle"></i></span>
+            <input type="text" class="form-control" placeholder="Ingrese nombre del destinatario" aria-label="Username"
+                id="name" value="Jason Statham" />
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
+                    class="fas fa-envelope"></i></span>
+            <input type="text" class="form-control" placeholder="Ingrese correo del destinatario" aria-label="Username"
+                id="email" value="jasonstatham@gmail.com" />
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
+                    class="fas fa-id-card"></i></span>
+            <input type="text" class="form-control" placeholder="Ingrese RUT del destinatario" aria-label="Username"
+                id="rut" value="12.456.789-3" />
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
+                    class="fas fa-envelope-open-text"></i></span>
+            <input type="text" class="form-control" placeholder="Ingrese comentario de transferencia"
+                aria-label="Username" id="comment" value="comment test..." />
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
+                    class="fas fa-money-bill-wave"></i></span>
+            <input type="text" class="form-control" placeholder="Ingrese el monto que desea transferir"
+                aria-label="Username" id="amount" value="2000" />
+        </div>
+
+        <button type="button" class="btn btn-dark" onclick="transfer()">Transferir</button>
+    </div>
+</div>
+<script>
+    const transfer = async () => {
+        const token = "{{token}}"
+        const name = document.getElementById("name").value
+        const email = document.getElementById("email").value
+        const rut = document.getElementById("rut").value
+        const comment = document.getElementById("comment").value
+        const amount = document.getElementById("amount").value
+
+        const expRUT = /^(\d{1,2}\.\d{3}\.\d{3}-)([kK]{1}$|\d{1}$)/
+        const expEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+
+        if (!expRUT.test(rut)) {
+            alert("El RUT ingresado no cumple con el siguiente formato: 12.456.789-3")
+        } else if (!expEmail.test(email)) {
+            alert("Elemail ingresado no cumple con el siguiente formato: email@test.com")
+
+        } else {
+            const payload = { name, email, rut, comment, amount }
+            try {
+                await axios.post(`/transferencias?token=${token}`, payload)
+                alert(`Transferencia realizada con éxito!`)
+                window.location = "/"
+            } catch (e) {
+                const { response } = e
+                const { data } = response
+                console.log(data)
+                const { message } = data
+                const { code, detail } = message
+                alert(code ? `Error SQL código ${code} ${detail}` : message)
+            }
+        }
+
+
+    }
+</script>

@@ -1,0 +1,84 @@
+<div class="d-flex justify-content-between align-items-center px-5 py-4 d-sm-none" data-toggle="collapse"
+    href="#navbar-Mobile" id="navbar-mobile">
+    <span>BDC</span>
+    <i class="fas fa-bars burger-icon"></i>
+</div>
+
+
+<div class="collapse text-center py-5 bg-dark d-sm-none" id="navbar-Mobile">
+    <p>
+        <a href="#" onclick="newTransfer()">Nueva transferencia</a>
+    </p>
+    <p>
+        <a href="#" onclick="cartola()">Cartola</a>
+    </p>
+    <p>
+        <a href="#" onclick="update()">Modificar datos</a>
+    </p>
+    <p>
+        <a href="/">Cerrar Sesión</a>
+    </p>
+    <p>
+        <a href="#" onclick="deleteUser()" class="text-danger">Eliminar cuenta</a>
+    </p>
+</div>
+
+<div class="d-none d-sm-block col-sm-3 text-center py-3 menu-navegacion" id="navbar" style="background-color: #f5f2f0">
+    <h6>{{user.name}}</h6>
+    <p class="mb-0">Banco Digital de Chile</p>
+    <hr class="w-75 mx-auto mt-1" />
+    <div class="border text-white opcion" id="Transferencias" data-toggle="collapse" href="#transferencias">
+        <h6 class=""> Transferencias</h6>
+        <div class="collapse" id="transferencias">
+            <div>
+                <a href="#" onclick="newTransfer()">Nueva transferencia</a>
+            </div>
+            <div>
+                <a href="#" onclick="cartola()">Cartola</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="border text-white opcion" id="Transferencias" data-toggle="collapse" href="#perfil">
+        <h6 class=""> Perfil </h6>
+        <div class="collapse" id="perfil">
+            <div>
+                <a href="#" onclick="update()">Modificar datos</a>
+            </div>
+            <div>
+                <a href="/">Cerrar Sesión</a>
+            </div>
+            <div>
+                <a href="#" onclick="deleteUser()" class="text-danger">Eliminar cuenta</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    const token = "{{token}}"
+    const cartola = () => window.location = `/Dashboard?token=${token}`
+    const newTransfer = () => window.location = `/Dashboard/transferencia?token=${token}`
+    const update = () => window.location = `/Dashboard/perfil?token=${token}`
+
+    const deleteUser = async () => {
+        const id = "{{user.id}}"
+        try {
+            await axios.delete(`/usuarios/${id}`)
+            alert("Usuario eliminado de la base de datos")
+            window.location = `/`
+        } catch (e) {
+            const { response } = e
+            const { data: message } = response
+            alert(message)
+        }
+    }
+
+
+
+
+</script>

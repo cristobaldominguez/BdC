@@ -1,11 +1,42 @@
 <!DOCTYPE html>
-<html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{{ title }}</title>
-    </head>
-    <body>
-        {{{ body }}}
-    </body>
+<html>
+
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Banco Digital de Chile</title>
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+   <link rel="stylesheet" href="/assets/css/GoogleFonts.css">
+   <link rel="stylesheet" href="/assets/css/mdbootstrap.css">
+   <link rel="stylesheet" href="/assets/css/estilos.css">
+   <script src="/assets/js/axios.js"></script>
+   <script src="/assets/js/jquery.js"></script>
+   <script src="/assets/js/bootstrap.js"></script>
+</head>
+
+<body class="row vh-100  mx-0">
+
+
+   {{{body}}}
+
+   <style>
+      .input-group-text {
+         width: 55px;
+         display: flex;
+         justify-content: center;
+      }
+
+      .wrapper {
+         width: 80%;
+      }
+
+      @media (min-width: 576px) {
+         .wrapper {
+            width: 50%;
+         }
+      }
+   </style>
+</body>
+
 </html>

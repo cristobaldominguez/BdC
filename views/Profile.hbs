@@ -1,0 +1,72 @@
+{{> Aside}}
+<div class="col-12 col-sm-9 text-center px-3 p-sm-5">
+
+
+    <small class="mb-2">Banco Digital de Chile</small>
+    <h4 class=>Modificar datos personales</h4>
+    <hr class="w-75 m-auto mb-2">
+    <div class="w-75 m-auto">
+        <div class="input-group mb-3">
+            <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
+                    class="fas fa-user-circle"></i></span>
+            <input type="text" class="form-control" placeholder="Ingrese su nombre completo" aria-label="Username"
+                value="Jason Statham" id="name" />
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
+                    class="fas fa-envelope"></i></span>
+            <input type="text" class="form-control" placeholder="Ingrese su correo" aria-label="Username"
+                value="jasonstatham@gmail.com" id="email" />
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
+                    class="fas fa-id-card"></i></span>
+            <input type="text" class="form-control" placeholder="Ingrese su RUT" aria-label="Username"
+                value="12.456.789-3" id="rut" />
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default">
+                <i class="fas fa-map-marker-alt"></i>
+
+            </span>
+            <input type="text" class="form-control" placeholder="Ingrese su dirección" aria-label="Username"
+                value="Providencia, Santiago" id="address" />
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
+                    class="fas fa-portrait"></i></span>
+            <input type="text" class="form-control" placeholder="Confirme su clave" aria-label="Username"
+                value="7895356" disabled />
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-dark" onclick="updateProfile()">Modificar</button>
+
+
+</div>
+
+<script>
+
+    const updateProfile = async () => {
+        const id = "{{user.id}}"
+        const name = document.getElementById("name").value
+        const rut = document.getElementById("rut").value
+        const email = document.getElementById("email").value
+        const address = document.getElementById("address").value
+        const payload = { name, rut, email, address, }
+        try {
+            await axios.put(`/usuarios/${id}`, payload)
+            alert(`Datos modificados con éxito!`)
+            location.reload();
+        } catch (e) {
+            const { response } = e
+            const { data } = response
+            const { message } = data
+            console.log(data)
+            const { code, detail } = message
+            alert(`Error SQL código ${code} ${detail}`)
+        }
+    }
+</script>

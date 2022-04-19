@@ -1,0 +1,108 @@
+{{> Aside}}
+<div class="col-12 col-sm-9 text-center px-3 p-sm-5">
+  <h2>Transferencias</h2>
+  <button type="button" class="btn btn-dark mb-2" onclick="newTransfer()">
+    Nueva Transferencia
+  </button>
+
+  <hr class="w-75 mx-auto my-2" />
+
+  <table class="table  m-auto table-striped d-none d-sm-inline">
+    <thead>
+
+      <tr>
+        <th>Referencia</th>
+        <th>Fecha</th>
+        <th>Comentario</th>
+        <th>Monto</th>
+        <th>Destinatario</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {{#each transfers}}
+
+      <tr>
+        <td>{{this.id}}</td>
+        <td>{{formatDate this.date}}</td>
+        <td>{{this.comment}}</td>
+        <td>{{this.amount}}</td>
+        <td>{{this.name}}</td>
+      </tr>
+      {{/each}}
+
+    </tbody>
+  </table>
+
+  <div class="d-sm-none " id="transferencias-mobile">
+    {{#each transfers}}
+    <div class=" bg-light pt-2">
+      <div >
+        <label>Referencia:</label>
+        {{this.id}}
+      </div>
+      <div >
+        <label>Monto:</label>
+        {{this.amount}}
+      </div>
+      <div >
+        <label>Fecha:</label>
+        {{formatDate this.date}}
+      </div>
+
+      <div >
+        <label>Destinatario:</label>
+        {{this.name}}
+      </div>
+      <div >
+        <label>Comentario:</label>
+        {{this.comment}}
+      </div>
+      <hr class="mt-2 mb-0">
+    </div>
+    {{/each}}
+  </div>
+
+  <div class="d-flex justify-content-center mt-2">
+    <nav aria-label="Page navigation example ">
+      <ul class="pagination">
+
+        <li class="page-item" id="prev">
+          <a class="page-link " href="/Dashboard?pag={{prev pag}}&token={{token}}">Anterior</a>
+        </li>
+
+        <li class="page-item" id="next">
+          <a class="page-link " href="/Dashboard?pag={{next pag pageQ}}&token={{token}}">Siguiente</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<script>
+
+  const pageQ = {{ pageQ }};
+  const page = {{ pag }};
+  for (let i = 1; i <= pageQ; i++) {
+
+    $("#next").before(
+
+      i == page ? `
+              <li class="page-item bg-dark">
+                <a class="page-link text-white" href="/Dashboard?pag=${i}&token={{token}}">${i}</a>
+              </li>
+             ` :
+        `
+              <li class="page-item">
+                <a class="page-link" href="/Dashboard?pag=${i}&token={{token}}">
+                  ${i}
+                </a>
+              </li>
+              `
+
+    )
+  }
+
+
+
+</script>

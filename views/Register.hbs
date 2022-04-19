@@ -1,0 +1,81 @@
+<div class="px-5  py-3 m-auto card text-center wrapper">
+    <i class="fas fa-university fa-5x text-center my-2"></i>
+
+    <small class="mb-2">Banco Digital de Chile</small>
+    <h4 class=>Registro</h4>
+    <div class="input-group mb-3">
+        <span class="input-group-text d-flex justify-content-center"><i class="fas fa-user-circle"></i></span>
+        <input class="form-control" placeholder="Ingrese su nombre completo" id="name" value="Name Test" />
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text d-flex justify-content-center"><i class="fas fa-envelope"></i></span>
+        <input class="form-control" placeholder="Ingrese su correo" id="email" value="email@test.com" />
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text d-flex justify-content-center"><i class="fas fa-id-card"></i></span>
+        <input class="form-control" placeholder="Ingrese su RUT" id="rut" value="12.456.789-3" />
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text d-flex justify-content-center">
+            <i class="fas fa-map-marker-alt"></i>
+
+        </span>
+        <input class="form-control" placeholder="Ingrese su dirección" id="address" value="Providencia, Santiago" />
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text d-flex justify-content-center"><i class="fas fa-key"></i></span>
+        <input class="form-control" type="password" placeholder="Ingrese su clave" id="password" value="123456" />
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text d-flex justify-content-center"><i class="fas fa-key"></i></span>
+        <input class="form-control" type="password" placeholder="Confirme su clave" id="passwordConfirm"
+            value="123456" />
+    </div>
+
+    <button type="button" onclick="register()" class="btn btn-light w-50 m-auto"
+        data-mdb-ripple-color="dark">Registrarme</button>
+    <a href="/" class="mt-2">Ingresar</a>
+</div>
+
+<script>
+    const register = async () => {
+        const name = document.getElementById("name").value
+        const rut = document.getElementById("rut").value
+        const email = document.getElementById("email").value
+        const address = document.getElementById("address").value
+        const password = document.getElementById("password").value
+        const passwordConfirm = document.getElementById("passwordConfirm").value
+
+        const expRUT = /^(\d{1,2}\.\d{3}\.\d{3}-)([kK]{1}$|\d{1}$)/
+        const expEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+
+        if (password !== passwordConfirm) {
+            alert("Las contraseñas deben ser iguales")
+        }
+        else if (!expRUT.test(rut)) {
+            alert("El RUT ingresado no cumple con el siguiente formato: 12.456.789-3")
+        } else if (!expEmail.test(email)) {
+            alert("Elemail ingresado no cumple con el siguiente formato: email@test.com")
+
+        } else {
+            const payload = { name, rut, email, address, password }
+            try {
+                await axios.post("/usuarios", payload)
+                alert(`Usuario registrado con éxito!, Bienvenid@ ${name}, ahora intente iniciar sesión`)
+                window.location = "/"
+            } catch (e) {
+                const { response } = e
+                const { data } = response
+                const { message } = data
+                console.log(data)
+                const {code, detail} = message
+                alert(`Error SQL código ${code} ${detail}`)
+            }
+        }
+
+
+    }
+</script>

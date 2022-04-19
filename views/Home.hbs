@@ -1,0 +1,43 @@
+<div class="px-5  py-3 m-auto card text-center wrapper">
+    <i class="fas fa-university fa-5x text-center my-2"></i>
+    <small class="mb-2">Banco Digital de Chile</small>
+    <h4 class=>Iniciar Sesión</h4>
+    <div class="input-group mb-3">
+        <span class="input-group-text " id="inputGroup-sizing-default"><i class="fas fa-id-card"></i></span>
+        <input type="text" class="form-control" placeholder="Ingrese su RUT" aria-label="Username" id="rut"
+            value="12.456.789-3" />
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
+                class="fas fa-key"></i></span>
+        <input type="password" class="form-control" placeholder="Ingrese su clave" aria-label="Username" id="password"
+            value="123456" />
+    </div>
+
+    <button type="button" class="btn btn-light w-50 m-auto" data-mdb-ripple-color="dark"
+        onclick="login()">Ingresar</button>
+    <a href="/registro" class="mt-2">Registrarme</a>
+</div>
+
+
+
+<script>
+
+    const login = async () => {
+        const rut = document.getElementById("rut").value
+        const password = document.getElementById("password").value
+        const payload = { rut, password }
+        try {
+            const { data: token } = await axios.post("/login", payload)
+            window.location = `/Dashboard?token=${token}`
+        } catch (e) {
+            const { response } = e
+            const { data: message } = response
+            alert(message)
+        }
+    }
+
+
+
+</script>
