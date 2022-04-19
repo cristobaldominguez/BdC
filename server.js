@@ -24,7 +24,7 @@ app.use(mainRoutes)
 
 // 404 Page
 app.get("*", (req, res) => {
-    res.render('404', { title: 'Oh no! a 404 :(' })
+    res.render('404', { title: 'Oh no! a 404 :(', text: 'No existe la ruta' })
 })
 
 // Server Running
