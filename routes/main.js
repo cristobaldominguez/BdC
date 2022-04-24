@@ -5,7 +5,7 @@ const router = express.Router()
 
 // Routes
 router.get('/', (req, res) => {
-    res.render('Dashboard', { layout: 'main', title: 'Hello World', text: 'Hola Mundo' })
+    res.render('Home', { layout: 'main', title: 'Hello World', text: 'Hola Mundo' })
 })
 
 export default router
