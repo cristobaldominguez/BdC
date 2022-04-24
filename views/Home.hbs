@@ -20,24 +20,22 @@
     <a href="/registro" class="mt-2">Registrarme</a>
 </div>
 
-
-
 <script>
 
     const login = async () => {
         const rut = document.getElementById("rut").value
         const password = document.getElementById("password").value
         const payload = { rut, password }
+
         try {
             const { data: token } = await axios.post("/login", payload)
             window.location = `/Dashboard?token=${token}`
+
         } catch (e) {
             const { response } = e
             const { data: message } = response
             alert(message)
         }
     }
-
-
 
 </script>
