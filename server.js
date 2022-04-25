@@ -4,6 +4,7 @@ import handlebars from 'express-handlebars'
 
 // Routes
 import mainRoutes from './routes/main.js'
+import usersRoutes from './routes/users.js'
 
 // Server
 const app = express()
@@ -21,6 +22,7 @@ app.engine('.hbs', handlebars({ extname: '.hbs' }))
 
 // App Routes
 app.use(mainRoutes)
+app.use('/users', usersRoutes)
 
 // 404 Page
 app.get("*", (req, res) => {

@@ -1,71 +1,76 @@
-<div class="px-5  py-3 m-auto card text-center wrapper">
+<form action="/users" method="post" class="form px-5 py-3 m-auto card text-center wrapper">
     <i class="fas fa-university fa-5x text-center my-2"></i>
 
     <small class="mb-2">Banco Digital de Chile</small>
     <h4 class=>Registro</h4>
     <div class="input-group mb-3">
         <span class="input-group-text d-flex justify-content-center"><i class="fas fa-user-circle"></i></span>
-        <input class="form-control" placeholder="Ingrese su nombre completo" id="name" value="Name Test" />
+        <input class="form-control" placeholder="Ingrese su nombre" name="first_name" id="first_name" value="Sheldon" />
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text d-flex justify-content-center"><i class="fas fa-user-circle"></i></span>
+        <input class="form-control" placeholder="Ingrese su apellido" name="last_name" id="last_name" value="Cooper" />
     </div>
 
     <div class="input-group mb-3">
         <span class="input-group-text d-flex justify-content-center"><i class="fas fa-envelope"></i></span>
-        <input class="form-control" placeholder="Ingrese su correo" id="email" value="email@test.com" />
+        <input class="form-control" placeholder="Ingrese su correo" name="email" id="email" value="email@test.com" />
     </div>
     <div class="input-group mb-3">
         <span class="input-group-text d-flex justify-content-center"><i class="fas fa-id-card"></i></span>
-        <input class="form-control" placeholder="Ingrese su RUT" id="rut" value="12.345.678-5" />
+        <input class="form-control" placeholder="Ingrese su RUT" name="rut" id="rut" value="12.456.789-0" />
     </div>
     <div class="input-group mb-3">
         <span class="input-group-text d-flex justify-content-center">
             <i class="fas fa-map-marker-alt"></i>
 
         </span>
-        <input class="form-control" placeholder="Ingrese su dirección" id="address" value="Providencia, Santiago" />
+        <input class="form-control" placeholder="Ingrese su dirección" name="address" id="address" value="Providencia, Santiago" />
     </div>
 
     <div class="input-group mb-3">
         <span class="input-group-text d-flex justify-content-center"><i class="fas fa-key"></i></span>
-        <input class="form-control" type="password" placeholder="Ingrese su clave" id="password" value="123456" />
+        <input class="form-control" type="password" placeholder="Ingrese su clave" name="password" id="password" value="123456" />
     </div>
 
     <div class="input-group mb-3">
         <span class="input-group-text d-flex justify-content-center"><i class="fas fa-key"></i></span>
-        <input class="form-control" type="password" placeholder="Confirme su clave" id="passwordConfirm"
+        <input class="form-control" type="password" placeholder="Confirme su clave" name="passwordConfirm" id="passwordConfirm"
             value="123456" />
     </div>
 
-    <button type="button" onclick="register()" class="btn btn-light w-50 m-auto"
-        data-mdb-ripple-color="dark">Registrarme</button>
+    <button type="submit" class="btn btn-light w-50 m-auto" data-mdb-ripple-color="dark">Registrarme</button>
     <a href="/" class="mt-2">Ingresar</a>
-</div>
+</form>
 
 <script>
-    const register = async () => {
-        const name = document.getElementById("name").value
-        const rut = document.getElementById("rut").value
-        const email = document.getElementById("email").value
-        const address = document.getElementById("address").value
-        const password = document.getElementById("password").value
-        const passwordConfirm = document.getElementById("passwordConfirm").value
+    const form = document.querySelector('.form')
+    form && form.addEventListener('submit', register)
 
+    async function register(e) {
+        e.preventDefault()
+        
         const expRUT = /^(\d{1,2}\.\d{3}\.\d{3}-)([kK]{1}$|\d{1}$)/
         const expEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+        
+        const payload = Object.fromEntries(new FormData(e.target))
 
-        if (password !== passwordConfirm) {
+        if (payload.password !== payload.passwordConfirm) {
             alert("Las contraseñas deben ser iguales")
-        }
-        else if (!expRUT.test(rut)) {
-            alert("El RUT ingresado no cumple con el siguiente formato: 12.456.789-3")
-        } else if (!expEmail.test(email)) {
-            alert("Elemail ingresado no cumple con el siguiente formato: email@test.com")
+
+        } else if (!expRUT.test(payload.rut)) {
+            alert("El RUT ingresado no cumple con el siguiente formato: 12.345.678-5")
+
+        } else if (!expEmail.test(payload.email)) {
+            alert("El email ingresado no cumple con el siguiente formato: email@test.com")
 
         } else {
-            const payload = { name, rut, email, address, password }
             try {
-                await axios.post("/usuarios", payload)
-                alert(`Usuario registrado con éxito!, Bienvenid@ ${name}, ahora intente iniciar sesión`)
+                await axios.post(form.action, payload)
+                alert(`Usuario registrado con éxito!, Bienvenid@ ${payload.first_name}, ahora intente iniciar sesión`)
                 window.location = "/"
+
             } catch (e) {
                 const { response } = e
                 const { data } = response
@@ -75,7 +80,5 @@
                 alert(`Error SQL código ${code} ${detail}`)
             }
         }
-
-
     }
 </script>
