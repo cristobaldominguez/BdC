@@ -11,6 +11,7 @@ dotenv.config()
 // Routes
 import mainRoutes from './routes/main.js'
 import usersRoutes from './routes/users.js'
+import dashboardRoutes from './routes/dashboard.js'
 
 // Server
 const app = express()
@@ -30,6 +31,7 @@ app.set('views', './views')
 // App Routes
 app.use(mainRoutes)
 app.use('/users', usersRoutes)
+app.use('/Dashboard', dashboardRoutes)
 
 // 404 Page
 app.get("*", (req, res) => {

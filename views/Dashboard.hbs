@@ -26,7 +26,7 @@
         <td>{{this.id}}</td>
         <td>{{formatDate this.date}}</td>
         <td>{{this.comment}}</td>
-        <td>{{this.amount}}</td>
+        <td>{{formatValue this.amount}}</td>
         <td>{{this.name}}</td>
       </tr>
       {{/each}}
@@ -43,7 +43,7 @@
       </div>
       <div >
         <label>Monto:</label>
-        {{this.amount}}
+        {{formatValue this.amount}}
       </div>
       <div >
         <label>Fecha:</label>
@@ -66,43 +66,18 @@
   <div class="d-flex justify-content-center mt-2">
     <nav aria-label="Page navigation example ">
       <ul class="pagination">
-
+        {{#if prev}}
         <li class="page-item" id="prev">
-          <a class="page-link " href="/Dashboard?pag={{prev pag}}&token={{token}}">Anterior</a>
+          <a class="page-link " href="/Dashboard?pag={{prev}}&token={{token}}">Anterior</a>
         </li>
+        {{/if}}
 
+        {{#if next}}
         <li class="page-item" id="next">
-          <a class="page-link " href="/Dashboard?pag={{next pag pageQ}}&token={{token}}">Siguiente</a>
+          <a class="page-link " href="/Dashboard?pag={{next}}&token={{token}}">Siguiente</a>
         </li>
+        {{/if}}
       </ul>
     </nav>
   </div>
 </div>
-
-<script>
-
-  const pageQ = {{ pageQ }};
-  const page = {{ pag }};
-  for (let i = 1; i <= pageQ; i++) {
-
-    $("#next").before(
-
-      i == page ? `
-              <li class="page-item bg-dark">
-                <a class="page-link text-white" href="/Dashboard?pag=${i}&token={{token}}">${i}</a>
-              </li>
-             ` :
-        `
-              <li class="page-item">
-                <a class="page-link" href="/Dashboard?pag=${i}&token={{token}}">
-                  ${i}
-                </a>
-              </li>
-              `
-
-    )
-  }
-
-
-
-</script>

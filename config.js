@@ -1,6 +1,7 @@
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
+const page_limit = 10
 const port = process.env.PORT || 3000
 const root = dirname(fileURLToPath(import.meta.url))
 const db = {
@@ -9,4 +10,4 @@ const db = {
     port: 5432
 }
 
-export { port, root, db }
+export { page_limit, port, root, db }
