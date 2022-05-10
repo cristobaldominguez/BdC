@@ -5,12 +5,8 @@ Handlebars.registerHelper('formatValue', formatValue)
 
 
 function formatDate(date) {
-    let year = date.getFullYear()
-    let month = date.getMonth() + 1
-    let day = date.getDate()
-    let hours = date.getHours()
-    let minutes = date.getMinutes()
-    return `${day}/${month}/${year} ${hours}:${minutes}`
+    const options = { hour: 'numeric', minute: 'numeric' }
+    return date.toLocaleDateString('en-GB', options)
 }
 
 function formatValue(value) {
