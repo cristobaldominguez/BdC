@@ -1,6 +1,7 @@
 import { port } from './config.js'
 import express from 'express'
-import handlebars from 'express-handlebars'
+import { engine } from 'express-handlebars'
+
 
 // Routes
 import mainRoutes from './routes/main.js'
@@ -17,8 +18,9 @@ app.use(express.json())
 app.use(express.static('public'))
 
 // Handlebars
+app.engine('.hbs', engine({ extname: '.hbs' }))
 app.set('view engine', '.hbs')
-app.engine('.hbs', handlebars({ extname: '.hbs' }))
+app.set('views', './views')
 
 // App Routes
 app.use(mainRoutes)
