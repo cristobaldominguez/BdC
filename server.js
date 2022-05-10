@@ -3,6 +3,8 @@ import { port } from './config.js'
 import express from 'express'
 import { engine } from 'express-handlebars'
 
+import Handlebars from './helpers/handlebars.js'
+
 // DotEnv Config
 dotenv.config()
 
