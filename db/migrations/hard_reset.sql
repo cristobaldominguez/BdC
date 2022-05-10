@@ -26,7 +26,7 @@ CREATE TABLE users(
 CREATE TABLE wire_transfers(
     id SERIAL,
 
-    date TIMESTAMP NOT NULL,
+    date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     id_from INT NOT NULL,
     id_to INT NOT NULL,
     comment VARCHAR(50) NOT NULL,
