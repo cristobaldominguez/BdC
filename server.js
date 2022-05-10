@@ -1,7 +1,10 @@
+import dotenv from 'dotenv'
 import { port } from './config.js'
 import express from 'express'
 import { engine } from 'express-handlebars'
 
+// DotEnv Config
+dotenv.config()
 
 // Routes
 import mainRoutes from './routes/main.js'

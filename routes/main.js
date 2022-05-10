@@ -1,12 +1,8 @@
-import dotenv from 'dotenv'
 import express from 'express'
 import jwt from 'jsonwebtoken'
 
 // Router Creation
 const router = express.Router()
-
-// DotEnv Config
-dotenv.config()
 
 // Queries
 import { login } from '../db/queries/main.js'
