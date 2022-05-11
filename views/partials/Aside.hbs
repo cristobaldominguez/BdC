@@ -7,10 +7,10 @@
 
 <div class="collapse text-center py-5 bg-dark d-sm-none" id="navbar-Mobile">
     <p>
-        <a href="#" onclick="newTransfer()">Nueva transferencia</a>
+        <a href="/Dashboard/transferencia?token={{token}}">Nueva transferencia</a>
     </p>
     <p>
-        <a href="#" onclick="cartola()">Cartola</a>
+        <a href="/Dashboard?token={{token}}">Cartola</a>
     </p>
     <p>
         <a href="#" onclick="update()">Modificar datos</a>
@@ -31,10 +31,10 @@
         <h6 class=""> Transferencias</h6>
         <div class="collapse" id="transferencias">
             <div>
-                <a href="#" onclick="newTransfer()">Nueva transferencia</a>
+                <a href="/wire_transfers/new?token={{token}}">Nueva transferencia</a>
             </div>
             <div>
-                <a href="#" onclick="cartola()">Cartola</a>
+                <a href="/Dashboard?token={{token}}">Cartola</a>
             </div>
         </div>
 
@@ -59,12 +59,6 @@
 </div>
 
 <script>
-
-    const token = "{{token}}"
-    const cartola = () => window.location = `/Dashboard?token=${token}`
-    const newTransfer = () => window.location = `/Dashboard/transferencia?token=${token}`
-    const update = () => window.location = `/Dashboard/perfil?token=${token}`
-
     const deleteUser = async () => {
         const id = "{{user.id}}"
         try {
@@ -77,8 +71,4 @@
             alert(message)
         }
     }
-
-
-
-
 </script>

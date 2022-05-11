@@ -3,48 +3,89 @@
     <small class="mb-2">Banco Digital de Chile</small>
     <h4 class=>Nueva Transferencia</h4>
     <hr class="w-75 m-auto">
-    <div class="m-auto w-75 pt-3">
+    <form action="/wire_transfers/create?token={{token}}" method="POST" class="transfer-form m-auto w-75 pt-3">
         <div class="input-group mb-3">
             <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
                     class="fas fa-user-circle"></i></span>
             <input type="text" class="form-control" placeholder="Ingrese nombre del destinatario" aria-label="Username"
-                id="name" value="Jason Statham" />
+                name="first_name" id="name" value="Juan" />
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
+                    class="fas fa-user-circle"></i></span>
+            <input type="text" class="form-control" placeholder="Ingrese apellido del destinatario" aria-label="Username"
+                name="last_name" id="name" value="Pérez" />
         </div>
 
         <div class="input-group mb-3">
             <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
                     class="fas fa-envelope"></i></span>
             <input type="text" class="form-control" placeholder="Ingrese correo del destinatario" aria-label="Username"
-                id="email" value="jasonstatham@gmail.com" />
+                name="email" id="email" value="jperez@example.com" />
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
                     class="fas fa-id-card"></i></span>
             <input type="text" class="form-control" placeholder="Ingrese RUT del destinatario" aria-label="Username"
-                id="rut" value="12.456.789-3" />
+                name="rut" id="rut" value="13.932.325-4" />
         </div>
 
         <div class="input-group mb-3">
             <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
                     class="fas fa-envelope-open-text"></i></span>
             <input type="text" class="form-control" placeholder="Ingrese comentario de transferencia"
-                aria-label="Username" id="comment" value="comment test..." />
+                aria-label="Username" name="comment" id="comment" value="comment test..." />
         </div>
 
         <div class="input-group mb-3">
             <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
                     class="fas fa-money-bill-wave"></i></span>
             <input type="text" class="form-control" placeholder="Ingrese el monto que desea transferir"
-                aria-label="Username" id="amount" value="2000" />
+                aria-label="Username" name="amount" id="amount" value="2000" />
         </div>
 
-        <button type="button" class="btn btn-dark" onclick="transfer()">Transferir</button>
-    </div>
+        <button type="submit" class="btn btn-dark" data-mdb-ripple-color="dark">Transferir</button>
+    </form>
 </div>
+
 <script>
-    const transfer = async () => {
-        const token = "{{token}}"
-        const name = document.getElementById("name").value
+    const token = "{{token}}"
+    const form = document.querySelector('.transfer-form')
+    form && form.addEventListener('submit', formSubmitHandler)
+
+    async function formSubmitHandler(e) {
+        e.preventDefault()
+
+        const expRUT = /^(\d{1,2}\.\d{3}\.\d{3}-)([kK]{1}$|\d{1}$)/
+        const expEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+
+        const payload = Object.fromEntries(new FormData(e.target))
+
+        if (!expRUT.test(payload.rut)) { return alert("El RUT ingresado no cumple con el siguiente formato: 12.456.789-3") }
+        if (!expEmail.test(payload.email)) { return alert("Elemail ingresado no cumple con el siguiente formato: email@test.com") }
+
+        try {
+            const response = await fetch(e.target.action, {
+                method: e.target.method,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            window.location = '/dashboard?token=' + token
+
+        } catch (e) {
+            const { code, detail } = e.response.data.message
+            console.log({ code, detail })
+            alert(code ? `Error SQL código ${code} ${detail}` : message)
+        }
+    }
+</script>
+
+
+{{!-- const name = document.getElementById("name").value
         const email = document.getElementById("email").value
         const rut = document.getElementById("rut").value
         const comment = document.getElementById("comment").value
@@ -65,15 +106,8 @@
                 alert(`Transferencia realizada con éxito!`)
                 window.location = "/"
             } catch (e) {
-                const { response } = e
-                const { data } = response
-                console.log(data)
-                const { message } = data
-                const { code, detail } = message
+                const { code, detail } = e.response.data.message
+                console.log({ code, detail })
                 alert(code ? `Error SQL código ${code} ${detail}` : message)
             }
-        }
-
-
-    }
-</script>
+        } --}}
