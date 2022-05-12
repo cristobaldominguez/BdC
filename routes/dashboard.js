@@ -13,7 +13,7 @@ dotenv.config()
 
 // Routes
 router.get('/', (req, res) => {
-    const { pag, token } = req.query;
+    const { pag, token } = req.query
     const current_page = pag ? Number(pag) : 1
     const offset = (current_page - 1) * page_limit
 

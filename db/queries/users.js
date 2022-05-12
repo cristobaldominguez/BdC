@@ -20,7 +20,7 @@ async function new_user({ first_name, last_name, rut, email, address, password }
 
 async function get_user({ rut, email }) {
     const query = {
-        text: `SELECT * FROM users WHERE rut = $1 AND email = $1 AND active = true `,
+        text: `SELECT * FROM users WHERE rut = $1 AND email = $2 AND active = true`,
         values: [rut, email]
     }
 
@@ -50,8 +50,25 @@ async function get_user_id({ first_name, last_name, rut, email }) {
     }
 }
 
+async function update_user({ id, first_name, last_name, rut, email, address}) {
+    const query = {
+        text: `UPDATE users SET first_name = $1, last_name = $2, rut = $3, email = $4, address = $5, updated_at = CURRENT_TIMESTAMP WHERE id = $6 RETURNING *`,
+        values: [first_name, last_name, rut, email, address, id]
+    }
+
+    try {
+        const result = await pool.query(query)
+        return result.rows[0]
+
+    } catch (e) {
+        console.error(e)
+        return e
+    }
+}
+
 export {
     new_user,
     get_user,
-    get_user_id
+    get_user_id,
+    update_user
 }

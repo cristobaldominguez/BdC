@@ -1,29 +1,35 @@
 {{> Aside}}
 <div class="col-12 col-sm-9 text-center px-3 p-sm-5">
 
-
     <small class="mb-2">Banco Digital de Chile</small>
     <h4 class=>Modificar datos personales</h4>
     <hr class="w-75 m-auto mb-2">
-    <div class="w-75 m-auto">
+    <form action="/users/update?token={{token}}" method="POST" class="w-75 m-auto">
         <div class="input-group mb-3">
             <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
                     class="fas fa-user-circle"></i></span>
-            <input type="text" class="form-control" placeholder="Ingrese su nombre completo" aria-label="Username"
-                value="Jason Statham" id="name" />
+            <input type="text" class="form-control" placeholder="Ingrese su nombre" aria-label="Username"
+                value="{{ user.first_name }}" name="first_name" id="first_name" />
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
+                    class="fas fa-user-circle"></i></span>
+            <input type="text" class="form-control" placeholder="Ingrese su apellido" aria-label="Username"
+                value="{{ user.last_name }}" name="last_name" id="last_name" />
         </div>
 
         <div class="input-group mb-3">
             <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
                     class="fas fa-envelope"></i></span>
             <input type="text" class="form-control" placeholder="Ingrese su correo" aria-label="Username"
-                value="jasonstatham@gmail.com" id="email" />
+                value="{{ user.email }}" name="email" id="email" />
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
                     class="fas fa-id-card"></i></span>
             <input type="text" class="form-control" placeholder="Ingrese su RUT" aria-label="Username"
-                value="12.456.789-3" id="rut" />
+                value="{{ user.rut }}" name="rut" id="rut" />
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default">
@@ -31,42 +37,36 @@
 
             </span>
             <input type="text" class="form-control" placeholder="Ingrese su dirección" aria-label="Username"
-                value="Providencia, Santiago" id="address" />
+                value="{{ user.address }}" name="address" id="address" />
         </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
-                    class="fas fa-portrait"></i></span>
-            <input type="text" class="form-control" placeholder="Confirme su clave" aria-label="Username"
-                value="7895356" disabled />
-        </div>
-    </div>
-
-    <button type="button" class="btn btn-dark" onclick="updateProfile()">Modificar</button>
-
+        <button type="submit" class="btn btn-dark">Modificar</button>
+    </form>
 
 </div>
-
 <script>
+    const form = document.querySelector('form')
+    form && form.addEventListener('submit', updateProfileHandler)
 
-    const updateProfile = async () => {
-        const id = "{{user.id}}"
-        const name = document.getElementById("name").value
-        const rut = document.getElementById("rut").value
-        const email = document.getElementById("email").value
-        const address = document.getElementById("address").value
-        const payload = { name, rut, email, address, }
+    async function updateProfileHandler(e) {
+        e.preventDefault()
+
+        const payload = Object.fromEntries(new FormData(e.target))
+
         try {
-            await axios.put(`/usuarios/${id}`, payload)
-            alert(`Datos modificados con éxito!`)
-            location.reload();
+            const response = await fetch(e.target.action, {
+                method: e.target.method,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            const user = await response.json()
+            window.location.href = window.location.origin + window.location.pathname + '?token=' + user.token
+
         } catch (e) {
-            const { response } = e
-            const { data } = response
-            const { message } = data
-            console.log(data)
-            const { code, detail } = message
-            alert(`Error SQL código ${code} ${detail}`)
+            console.log(e)
         }
     }
 </script>
