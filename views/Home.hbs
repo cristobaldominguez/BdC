@@ -1,41 +1,40 @@
-<div class="px-5  py-3 m-auto card text-center wrapper">
+<form action="/login" class="px-5  py-3 m-auto card text-center wrapper">
     <i class="fas fa-university fa-5x text-center my-2"></i>
     <small class="mb-2">Banco Digital de Chile</small>
     <h4 class=>Iniciar Sesión</h4>
     <div class="input-group mb-3">
         <span class="input-group-text " id="inputGroup-sizing-default"><i class="fas fa-id-card"></i></span>
-        <input type="text" class="form-control" placeholder="Ingrese su RUT" aria-label="Username" id="rut"
+        <input type="text" class="form-control" placeholder="Ingrese su RUT" aria-label="Username" name="rut" id="rut"
             value="12.345.678-5" />
     </div>
 
     <div class="input-group mb-3">
         <span class="input-group-text d-flex justify-content-center" id="inputGroup-sizing-default"><i
                 class="fas fa-key"></i></span>
-        <input type="password" class="form-control" placeholder="Ingrese su clave" aria-label="Username" id="password"
+        <input type="password" class="form-control" placeholder="Ingrese su clave" aria-label="Username" name="password" id="password"
             value="123456" />
     </div>
 
-    <button type="button" class="btn btn-light w-50 m-auto" data-mdb-ripple-color="dark"
-        onclick="login()">Ingresar</button>
+    <button type="submit" class="btn btn-light w-50 m-auto" data-mdb-ripple-color="dark">Ingresar</button>
     <a href="/registro" class="mt-2">Registrarme</a>
-</div>
+</form>
 
 <script>
+    const form = document.querySelector('form')
+    form && form.addEventListener('submit', login)
 
-    const login = async () => {
-        const rut = document.getElementById("rut").value
-        const password = document.getElementById("password").value
-        const payload = { rut, password }
+    async function login(e) {
+        e.preventDefault()
+
+        const payload = Object.fromEntries(new FormData(e.target))
 
         try {
             const { data: token } = await axios.post("/login", payload)
             window.location = `/Dashboard?token=${token}`
 
         } catch (e) {
-            const { response } = e
-            const { data: message } = response
+            const { data: message } = e.response
             alert(message)
         }
     }
-
 </script>
