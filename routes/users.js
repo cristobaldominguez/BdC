@@ -45,11 +45,19 @@ router.post('/update', (req, res) => {
         try {
             const response = await update_user({ id: user.id, first_name, last_name, rut, email, address})
             const new_token = jwt.sign(response, process.env.SECRET_KEY)
-            res.status(200).send({...response, token: new_token})
+            res.status(200).send({...response, token: new_token}) 
 
         } catch (e) {
 
         }
+    })
+})
+
+router.delete('/', (req, res) => {
+    const { token } = req.query
+    jwt.verify(token, process.env.SECRET_KEY, async (err, user) => {
+        console.log(user)
+        // res.status(204).json({ content: 'Ok' })
     })
 })
 

@@ -62,7 +62,7 @@
     const deleteUser = async () => {
         const id = "{{user.id}}"
         try {
-            await axios.delete(`/usuarios/${id}`)
+            await axios.delete(`/users?token={{token}}`)
             alert("Usuario eliminado de la base de datos")
             window.location = `/`
         } catch (e) {
